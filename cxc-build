@@ -383,16 +383,16 @@ COMPILERS = {
 			'has_lto': True,
 			'build_gdb': True,
 		},
-		'unknown-linux': {
-			'binutils_args' : [],
-			'gdb_args': [],
-			'gcc_args': [],
-			'glibc_args': [],
-			'build': True,
-			'has_lto': True,
-			'build_gdb': True,
-			'linux_arch': 'riscv',
-		}
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'riscv',
+		# }
 	},
 	'riscv64': {
 		'none-elf': {
