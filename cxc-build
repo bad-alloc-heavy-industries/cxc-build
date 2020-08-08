@@ -1,22 +1,5 @@
 #!/usr/bin/python
 #! SPDX-License-Identifier: BSD-3-Clause
-# This script builds the following 31 compilers
-# *         aarch64-none-elf *      aarch64-unknown-elf
-# *            arm-none-eabi *            ia64-none-elf
-# *         ia64-unknown-elf *      microblaze-none-elf
-# *   microblaze-unknown-elf *            mips-none-elf
-# *         mips-unknown-elf *            or1k-none-elf
-# *         or1k-unknown-elf *            m68k-none-elf
-# *         m68k-unknown-elf *            lm32-none-elf
-# *         lm32-unknown-elf *           ppcle-none-elf
-# *          ppcle-none-eabi *        ppcle-unknown-elf
-# *             ppc-none-elf *            ppc-none-eabi
-# *          ppc-unknown-elf *        ppc-unknown-linux
-# *         riscv32-none-elf *      riscv32-unknown-elf
-# *         riscv64-none-elf *      riscv64-unknown-elf
-# *            s390x-ibm-tpf *         sparc64-none-elf
-# *      sparc64-unknown-elf *          x86_64-none-elf
-# *       x86_64-unknown-elf
 
 from os import path, mkdir
 from tempfile import mkdtemp
@@ -613,7 +596,7 @@ COMPONENT_DEFAULTS = {
 			'--enable-__cxa_atexit', '--enable-clocale=gnu', '--enable-checking=release', '--disable-libstdcxx-pch',
 			'--enable-lto', '--disable-linker-build-id', '--enable-plugin', #'--with-linker-hash-style=gnu',
 			'--enable-gnu-unique-object', '--enable-long-long', '--enable-c99', '--disable-install-libiberty',
-			f'--with-local-prefix={SYSROOT}', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
+			f'--with-local-prefix={SYSROOT}/local', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
 			f'--with-sysroot={SYSROOT}', '--disable-libatomic', '--disable-libitm', '--disable-libsanitizer',
 			'--disable-libmudflap','--disable-libssp', '--disable-libunwind', '--disable-libstdcxx-time'
 		],
@@ -701,7 +684,7 @@ def reduce_compilers():
 	for arch, t in COMPILERS.items():
 		for k, v in t.items():
 			if v['build']:
-				cmpl.append(f'{arch}-{k}')
+				cmpl.append(f'{arch}-{k}' if len(k) > 0 else arch)
 	return cmpl
 
 def setup_dirs():
@@ -804,6 +787,11 @@ def exec_cmd(cmd, cwd, env = None):
 
 	if res.returncode != 0:
 		err(f'{res.stderr.decode("UTF-8")}')
+		with open(f'{WORKING_DIR}/cxc-build.stdout', 'w') as stdout:
+			stdout.write(res.stdout.decode('UTF-8'))
+		with open(f'{WORKING_DIR}/cxc-build.stderr', 'w') as stderr:
+			stderr.write(res.stderr.decode('UTF-8'))
+
 
 	return res.returncode
 
@@ -852,7 +840,7 @@ def build_gcc_stage1(src_dir, bld_dir, cfg_flgs, env):
 		return False
 
 	log('\t  => GCC stage one [Build]')
-	if exec_cmd(f'make -j {cpu_count()} all-gcc', bld_dir) != 0:
+	if exec_cmd(f'make -j {cpu_count()} all-gcc', bld_dir, env) != 0:
 		return False
 
 	log('\t  => GCC stage one [Install]')
@@ -863,11 +851,11 @@ def build_gcc_stage1(src_dir, bld_dir, cfg_flgs, env):
 
 def build_gcc_stage2(src_dir, bld_dir, cfg_flgs, env):
 	log('\t  => GCC stage two [Build]')
-	if exec_cmd(f'make -j {cpu_count()} all-target-libgcc', bld_dir) != 0:
+	if exec_cmd(f'make -j {cpu_count()} all-target-libgcc', bld_dir, env) != 0:
 		return False
 
 	log('\t  => GCC stage two [Install]')
-	if exec_cmd('make install install-target-libgcc', bld_dir) != 0:
+	if exec_cmd('make install install-target-libgcc', bld_dir, env) != 0:
 		return False
 
 	return True
@@ -875,11 +863,11 @@ def build_gcc_stage2(src_dir, bld_dir, cfg_flgs, env):
 
 def build_gcc_stage3(src_dir, bld_dir, cfg_flgs, env):
 	log('\t  => GCC stage three [Build]')
-	if exec_cmd(f'make -j {cpu_count()}', bld_dir) != 0:
+	if exec_cmd(f'make -j {cpu_count()}', bld_dir, env) != 0:
 		return False
 
 	log('\t  => GCC stage three [Install]')
-	if exec_cmd('make install', bld_dir) != 0:
+	if exec_cmd('make install', bld_dir, env) != 0:
 		return False
 
 	log('\t  => GCC stage three [Cleanup]')
@@ -897,11 +885,11 @@ def build_gcc_newlib(gcc_dirs, newlib_dirs, cfgs, target,  extras):
 			return False
 
 		log(f'\t  => Newlib [Build]')
-		if exec_cmd(f'make -j {cpu_count()}', bld_dir) != 0:
+		if exec_cmd(f'make -j {cpu_count()}', bld_dir, env) != 0:
 			return False
 
 		log(f'\t  => Newlib [Install]')
-		if exec_cmd('make install', bld_dir) != 0:
+		if exec_cmd('make install', bld_dir, env) != 0:
 			return False
 
 		log(f'\t  => Newlib [Cleanup]')
@@ -1117,7 +1105,7 @@ def build_target(target, cfg):
 		inf('GDB has been disabled for this platform, skipping')
 
 
-	if s_arch.split('-')[1] == 'linux':
+	if len(s_arch) > 0 and s_arch.split('-')[1] == 'linux':
 		log('\tInstalling Linux headers')
 		if not install_linux_headers(target):
 			err('Unable to install Linux headers for target')
@@ -1158,7 +1146,7 @@ def build_targets():
 	for arch, t in COMPILERS.items():
 		for k, v in t.items():
 			if v['build']:
-				if not build_target(f'{arch}-{k}', v):
+				if not build_target(f'{arch}-{k}' if len(k) > 0 else arch, v):
 					err(f'Unable to build target {arch}-{k}')
 					return False
 
