@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#! SPDX-License-Identifier: BSD-3-Clause
+#SPDX-License-Identifier: BSD-3-Clause
 
 from os import path, mkdir
 from tempfile import mkdtemp
