@@ -1,0 +1,1191 @@
+#!/usr/bin/python
+#! SPDX-License-Identifier: BSD-3-Clause
+# This script builds the following 31 compilers
+# *         aarch64-none-elf *      aarch64-unknown-elf
+# *            arm-none-eabi *            ia64-none-elf
+# *         ia64-unknown-elf *      microblaze-none-elf
+# *   microblaze-unknown-elf *            mips-none-elf
+# *         mips-unknown-elf *            or1k-none-elf
+# *         or1k-unknown-elf *            m68k-none-elf
+# *         m68k-unknown-elf *            lm32-none-elf
+# *         lm32-unknown-elf *           ppcle-none-elf
+# *          ppcle-none-eabi *        ppcle-unknown-elf
+# *             ppc-none-elf *            ppc-none-eabi
+# *          ppc-unknown-elf *        ppc-unknown-linux
+# *         riscv32-none-elf *      riscv32-unknown-elf
+# *         riscv64-none-elf *      riscv64-unknown-elf
+# *            s390x-ibm-tpf *         sparc64-none-elf
+# *      sparc64-unknown-elf *          x86_64-none-elf
+# *       x86_64-unknown-elf
+
+from os import path, mkdir
+from tempfile import mkdtemp
+from sys import exit
+from multiprocessing import cpu_count
+from shutil import rmtree
+
+COMPILERS = {
+	'aarch64': {
+		'none-elf': {
+			'binutils_args' : [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gdb_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gcc_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'newlib_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gdb_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gcc_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'newlib_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'gdb_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'gcc_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'glibc_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'arm64',
+		# }
+	},
+	'arm': {
+		'none-eabi': {
+			'binutils_args' : [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gdb_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'gcc_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'newlib_args': [
+				'--enable-multilib', '--enable-interwork'
+			],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'gdb_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'gcc_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'glibc_args': [
+		# 		'--enable-multilib', '--enable-interwork'
+		# 	],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'ia64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [ ],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': False,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [ ],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': False,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'microblaze': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'mips': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'or1k': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'openrisc',
+		# }
+	},
+	'm68k': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'lm32': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-elf': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'newlib_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# }
+	},
+	'ppcle': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'none-eabi': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'powerpc',
+		# }
+	},
+	'ppc': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'none-eabi': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'powerpc',
+		# }
+	},
+	'riscv32': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-linux': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'glibc_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'linux_arch': 'riscv',
+		}
+	},
+	'riscv64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'riscv',
+		# }
+	},
+	# 's390': {
+	# 	'unknown-linux': {
+	# 		'binutils_args' : [],
+	# 		'gdb_args': [],
+	# 		'gcc_args': [],
+	# 		'glibc_args': [],
+	# 		'build': True,
+	# 		'has_lto': True,
+	# 		'build_gdb': True,
+	# 		'linux_arch': None,
+	# 	}
+	# },
+	's390x': {
+		'ibm-tpf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [
+				'--disable-threads'
+			],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': False,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 's390',
+		# }
+	},
+	'sparc64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'sparc',
+		# }
+	},
+	'x86_64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': 'x86',
+		# }
+	}
+}
+
+COMPONENT_VERSIONS = {
+	'GMP':      '6.2.0',
+	'MPFR':     '4.0.2',
+	'MPC':      '1.1.0',
+	'BINUTILS': '2.34',
+	'GDB':      '9.1',
+	'GCC':      '10.1.0',
+	'NEWLIB':   '3.3.0',
+	'LINUX':    '5.6',
+	'GLIBC':    '2.31',
+}
+
+COMPONENT_URLS = {
+	'GMP':      f'https://gmplib.org/download/gmp/gmp-{COMPONENT_VERSIONS["GMP"]}.tar.xz',
+	'MPFR':     f'https://www.mpfr.org/mpfr-current/mpfr-{COMPONENT_VERSIONS["MPFR"]}.tar.xz',
+	'MPC':      f'https://ftp.gnu.org/gnu/mpc/mpc-{COMPONENT_VERSIONS["MPC"]}.tar.gz',
+	'BINUTILS': f'https://ftp.gnu.org/gnu/binutils/binutils-{COMPONENT_VERSIONS["BINUTILS"]}.tar.xz',
+	'GDB':      f'https://ftp.gnu.org/gnu/gdb/gdb-{COMPONENT_VERSIONS["GDB"]}.tar.xz',
+	'GCC':      f'https://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-{COMPONENT_VERSIONS["GCC"]}/gcc-{COMPONENT_VERSIONS["GCC"]}.tar.xz',
+	'NEWLIB':   f'https://sourceware.org/pub/newlib/newlib-{COMPONENT_VERSIONS["NEWLIB"]}.tar.gz',
+	'LINUX':    f'https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-{COMPONENT_VERSIONS["LINUX"]}.tar.xz',
+	'GLIBC':    f'https://ftp.gnu.org/gnu/glibc/glibc-{COMPONENT_VERSIONS["GLIBC"]}.tar.xz',
+}
+
+HOST_TRIP  = 'x86_64-pc-linux-gnu'
+BUILD_TRIP = 'x86_64-pc-linux-gnu'
+PREFIX     = '/usr/cxc'
+SYSROOT    = '/usr/cxc'
+
+COMPONENT_DEFAULTS = {
+	'GMP': {
+		'compile_args': [
+			f'--prefix={PREFIX}'
+		],
+		'LD_LIBRARY_PATH': '',
+		'LDFLAGS': '',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': ''
+	},
+	'MPFR': {
+		'compile_args': [
+			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}'
+		],
+		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
+		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': ''
+	},
+	'MPC': {
+		'compile_args': [
+			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}',
+		],
+		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
+		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': ''
+	},
+	'BINUTILS': {
+		'compile_args': [
+			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
+			'--disable-shared', '--enable-host-shared', '--enable-64-bit-bfd', '--enable-static', '--enable-lto',
+			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--enable-gold', '--disable-install-libiberty',
+		],
+		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
+		'LDFLAGS': f'-Wl,-rpath-link,{PREFIX}/lib -Wl,-rpath,{PREFIX}/lib:/usr/lib64:/lib64:/usr/lib:/lib',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': ''
+	},
+	'GDB': {
+		'compile_args': [
+			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
+			'--disable-shared', '--enable-static', '--enable-lto', '--with-python',
+			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--disable-binutils', '--disable-ld',
+			'--disable-gold', '--disable-gas', '--disable-sim', '--disable-gprof', '--disable-install-libiberty',
+		],
+		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
+		'LDFLAGS': f'-Wl,-rpath-link,{PREFIX}/lib -Wl,-rpath,{PREFIX}/lib:/usr/lib64:/lib64:/usr/lib:/lib',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': ''
+	},
+	'GCC': {
+		'compile_args': [
+			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
+			'--with-gnu-as', '--with-gnu-ld', '--with-system-zlib', '--enable-languages=c,c++,lto',
+			'--enable-__cxa_atexit', '--enable-clocale=gnu', '--enable-checking=release', '--disable-libstdcxx-pch',
+			'--enable-lto', '--disable-linker-build-id', '--enable-plugin', #'--with-linker-hash-style=gnu',
+			'--enable-gnu-unique-object', '--enable-long-long', '--enable-c99', '--disable-install-libiberty',
+			f'--with-local-prefix={SYSROOT}', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
+			f'--with-sysroot={SYSROOT}', '--disable-libatomic', '--disable-libitm', '--disable-libsanitizer',
+			'--disable-libmudflap','--disable-libssp', '--disable-libunwind', '--disable-libstdcxx-time'
+		],
+		'LD_LIBRARY_PATH': '',
+		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
+		'LDFLAGS_FOR_BUILD': '', # f'-Wl,-rpath,{PREFIX}/lib',
+		'CFLAGS': '',
+		'CXXFLAGS': '',
+	},
+	'NEWLIB': {
+		'compile_args': [
+			f'--prefix={PREFIX}', '--enable-lto', '--enable-languages=c,c++',
+		],
+		'LD_LIBRARY_PATH': '',
+		'LDFLAGS': '',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': '',
+	},
+	'GLIBC': {
+		'compile_args': [
+			f'--prefix={PREFIX}', '--enable-lto', '--enable-languages=c,c++',
+		],
+		'LD_LIBRARY_PATH': '',
+		'LDFLAGS': '',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': '',
+	}
+}
+
+# WORKING_DIR  =  mkdtemp()
+WORKING_DIR    = '/tmp/cxc-build'
+BUILD_DIR      = path.join(WORKING_DIR, 'build')
+DOWNLOAD_DIR   = path.join(WORKING_DIR, 'download')
+SRC_DIR        = path.join(WORKING_DIR, 'src')
+
+def log(str, end = '\n'):
+	print(f'\x1B[35m[*]\x1B[0m {str}', end = end)
+
+def err(str, end = '\n'):
+	print(f'\x1B[31m[!]\x1B[0m {str}', end = end)
+
+def wrn(str, end = '\n'):
+	print(f'\x1B[33m[~]\x1B[0m {str}', end = end)
+
+def inf(str, end = '\n'):
+	print(f'\x1B[36m[~]\x1B[0m {str}', end = end)
+
+def dbg(str, end = '\n'):
+	print(f'\x1B[34m[~]\x1B[0m {str}', end = end)
+
+
+def print_table(lst, columns = 2):
+	for idx, itm in enumerate(lst):
+		print(f'{itm:>25}', end='\t')
+		if (idx + 1) % columns == 0:
+			print('')
+	print('')
+
+def print_startup():
+	cmplrs = reduce_compilers()
+	log(f'Active working directory: {WORKING_DIR}')
+	log(f'Building the following {len(cmplrs)} targets:')
+	print_table(cmplrs)
+	log('With the following versions:')
+	log(f'  GMP:      {COMPONENT_VERSIONS["GMP"]}')
+	log(f'  MPFR:     {COMPONENT_VERSIONS["MPFR"]}')
+	log(f'  MPC:      {COMPONENT_VERSIONS["MPC"]}')
+	log(f'  BINUTILS: {COMPONENT_VERSIONS["BINUTILS"]}')
+	log(f'  GDB:      {COMPONENT_VERSIONS["GDB"]}')
+	log(f'  GCC:      {COMPONENT_VERSIONS["GCC"]}')
+	log(f'  NEWLIB:   {COMPONENT_VERSIONS["NEWLIB"]}')
+	log(f'  LINUX:    {COMPONENT_VERSIONS["LINUX"]}')
+	log(f'  GLIBC:    {COMPONENT_VERSIONS["GLIBC"]}')
+	print('')
+	log(f'Install prefix:     {PREFIX}')
+	log(f'System root:        {SYSROOT}')
+	log(f'Download directory: {DOWNLOAD_DIR}')
+	log(f'Build directory:    {BUILD_DIR}')
+	log(f'Source directory:   {SRC_DIR}')
+
+def reduce_compilers():
+	cmpl = []
+	for arch, t in COMPILERS.items():
+		for k, v in t.items():
+			if v['build']:
+				cmpl.append(f'{arch}-{k}')
+	return cmpl
+
+def setup_dirs():
+	if not path.exists(WORKING_DIR):
+		mkdir(WORKING_DIR)
+
+	if not path.exists(BUILD_DIR):
+		mkdir(BUILD_DIR)
+
+	if not path.exists(DOWNLOAD_DIR):
+		mkdir(DOWNLOAD_DIR)
+
+	if not path.exists(SRC_DIR):
+		mkdir(SRC_DIR)
+
+def aquire_file(url):
+	import requests
+	fname = url.rsplit('/', 1)[1]
+	tgt_file = path.join(DOWNLOAD_DIR, fname)
+
+	if path.exists(tgt_file):
+		inf(f'\tAlready have {fname}, skipping')
+		return True
+
+	log(f'\tAcquiring {fname} from {url}')
+
+	with requests.get(url, allow_redirects=True) as r:
+		if not r.ok:
+			err(f'Unable to download {fname}: {r.status_code}')
+			return False
+		log('\t  => Downloading')
+		with open(tgt_file, 'wb') as f:
+			for chk in r.iter_content(chunk_size = 8192):
+				f.write(chk)
+	return True
+
+def download_components():
+	print('')
+	log('Acquiring needed source components')
+	for n, u in COMPONENT_URLS.items():
+		if not aquire_file(u):
+			return False
+
+	print('')
+	return True;
+
+def extract_srcs():
+	import tarfile
+	log('Extracting Sources')
+	for n, url in COMPONENT_URLS.items():
+		fname = url.rsplit('/', 1)[1]
+		tgt_file = path.join(DOWNLOAD_DIR, fname)
+		src_dir = path.join(SRC_DIR, f'{n}-{COMPONENT_VERSIONS[n]}'.lower())
+		if path.exists(src_dir):
+			inf(f'\t{n} has already been extracted to {src_dir}, skipping')
+			continue
+
+		log(f'\tExtracting {tgt_file} to {src_dir}')
+		with tarfile.open(tgt_file, 'r') as tar:
+			tar.extractall(SRC_DIR)
+
+	print('')
+	return True
+
+def extract_env(flgs):
+	from os import environ
+	_env = {**dict(environ)}
+
+	_env['PATH'] = f'{PREFIX}/bin:' + _env['PATH']
+
+	if flgs['LD_LIBRARY_PATH'] != '':
+		_env['LD_LIBRARY_PATH'] = flgs['LD_LIBRARY_PATH']
+
+	if flgs['LDFLAGS'] != '':
+		_env['LDFLAGS'] = flgs['LDFLAGS']
+
+	if flgs['LDFLAGS_FOR_BUILD'] != '':
+		_env['LDFLAGS_FOR_BUILD'] = flgs['LDFLAGS_FOR_BUILD']
+
+	if flgs['CFLAGS'] != '':
+		_env['CFLAGS'] = flgs['CFLAGS']
+
+	if flgs['CXXFLAGS'] != '':
+		_env['CXXFLAGS'] = flgs['CXXFLAGS']
+
+
+
+	return _env
+
+def exec_cmd(cmd, cwd, env = None):
+	from subprocess import run, PIPE
+	from os import environ
+
+	res = run(
+			cmd,
+			stdout = PIPE, stderr = PIPE,
+			shell = True, cwd = cwd,
+			env = env if env is not None else environ
+		)
+
+	if res.returncode != 0:
+		err(f'{res.stderr.decode("UTF-8")}')
+
+	return res.returncode
+
+
+def build_generic(src_dir, bld_dir, flgs, target = BUILD_TRIP, extra = []):
+	blt_sentinal = path.join(src_dir, f'{target}.CXC-BUILT')
+
+	if path.exists(blt_sentinal):
+		inf(f'\t    Already built for {target}, skipping')
+		return True
+
+	if not path.exists(bld_dir):
+		mkdir(bld_dir)
+
+	cfg_flgs = ' '.join(flgs['compile_args'] + extra)
+	if target != BUILD_TRIP:
+		cfg_flgs += f' --target={target}'
+
+	_env = extract_env(flgs)
+
+	log('\t  => Configuring')
+	if exec_cmd(f'{src_dir}/configure {cfg_flgs}', bld_dir, _env) != 0:
+		return False
+
+	log('\t  => Building')
+	if exec_cmd(f'make -j {cpu_count()}', bld_dir) != 0:
+		return False
+
+	log('\t  => Installing')
+	if exec_cmd('make install', bld_dir) != 0:
+		return False
+
+	with open(blt_sentinal, 'wb') as f:
+		pass
+
+	log('\t  => Cleanup')
+	rmtree(bld_dir)
+	return True
+
+def build_gcc_stage1(src_dir, bld_dir, cfg_flgs, env):
+	if not path.exists(bld_dir):
+		mkdir(bld_dir)
+
+	log('\t  => GCC stage one [Configure]')
+	if exec_cmd(f'{src_dir}/configure {cfg_flgs}', bld_dir, env) != 0:
+		return False
+
+	log('\t  => GCC stage one [Build]')
+	if exec_cmd(f'make -j {cpu_count()} all-gcc', bld_dir) != 0:
+		return False
+
+	log('\t  => GCC stage one [Install]')
+	if exec_cmd('make install-gcc', bld_dir) != 0:
+		return False
+
+	return True
+
+def build_gcc_stage2(src_dir, bld_dir, cfg_flgs, env):
+	log('\t  => GCC stage two [Build]')
+	if exec_cmd(f'make -j {cpu_count()} all-target-libgcc', bld_dir) != 0:
+		return False
+
+	log('\t  => GCC stage two [Install]')
+	if exec_cmd('make install install-target-libgcc', bld_dir) != 0:
+		return False
+
+	return True
+
+
+def build_gcc_stage3(src_dir, bld_dir, cfg_flgs, env):
+	log('\t  => GCC stage three [Build]')
+	if exec_cmd(f'make -j {cpu_count()}', bld_dir) != 0:
+		return False
+
+	log('\t  => GCC stage three [Install]')
+	if exec_cmd('make install', bld_dir) != 0:
+		return False
+
+	log('\t  => GCC stage three [Cleanup]')
+	rmtree(bld_dir)
+	return True
+
+
+def build_gcc_newlib(gcc_dirs, newlib_dirs, cfgs, target,  extras):
+	def build_newlib(src_dir, bld_dir, cfg_flgs, env):
+		if not path.exists(bld_dir):
+			mkdir(bld_dir)
+
+		log(f'\t  => Newlib [Configure]')
+		if exec_cmd(f'{src_dir}/configure {cfg_flgs}', bld_dir, env) != 0:
+			return False
+
+		log(f'\t  => Newlib [Build]')
+		if exec_cmd(f'make -j {cpu_count()}', bld_dir) != 0:
+			return False
+
+		log(f'\t  => Newlib [Install]')
+		if exec_cmd('make install', bld_dir) != 0:
+			return False
+
+		log(f'\t  => Newlib [Cleanup]')
+		rmtree(bld_dir)
+		return True
+
+	gcc_src, gcc_bld = gcc_dirs
+	newlib_src, newlib_bld = newlib_dirs
+	gcc_flg, newlib_flg = cfgs
+	gcc_extra, newlib_extra = extras
+
+	blt_sentinal = path.join(BUILD_DIR, f'{target}-gcc-newlib.CXC-BUILT')
+
+	if path.exists(blt_sentinal):
+		inf(f'\t    Already built for {target}, skipping')
+		return True
+
+	gcc_flags = ' '.join(
+			gcc_flg['compile_args'] +
+			gcc_extra +
+			[
+				f'--target={target}',
+				'--with-newlib',
+				f'--with-headers={newlib_src}/newlib/libc/include'
+			]
+		)
+	gcc_env = extract_env(gcc_flg)
+
+	newlib_flags = ' '.join(
+			newlib_flg['compile_args'] +
+			newlib_extra +
+			[
+				f' --target={target}',
+			]
+		)
+	newlib_env = extract_env(newlib_flg)
+
+
+	if not build_gcc_stage1(gcc_src, gcc_bld, gcc_flags + ' --without-headers', gcc_env):
+		err('Unable to build GCC, aborting')
+		return False
+
+	if not build_newlib(newlib_src, newlib_bld, newlib_flags, newlib_env):
+		err('Unable to build Newlib, aborting')
+		return False
+
+
+	inf('\t  => Skipping GCC stage two')
+
+	if not build_gcc_stage3(
+			gcc_src, gcc_bld,
+			gcc_flags, #+ f' --with-headers={PREFIX}/{target}/include',
+			gcc_env
+		):
+		err('Unable to build GCC, aborting')
+		return False
+
+	with open(blt_sentinal, 'wb') as f:
+		pass
+
+	return True
+
+def build_gcc_glibc(gcc_dirs, glibc_dirs, cfgs, target,  extras):
+	def build_glibc_stage1(src_dir, bld_dir, cfg_flgs, env):
+		if not path.exists(bld_dir):
+			mkdir(bld_dir)
+
+		log('\t  => glibc stage one [Configure]')
+		if exec_cmd(f'{src_dir}/configure {cfg_flgs}', bld_dir, env) != 0:
+			return False
+
+		return True
+
+	def build_glibc_stage2(src_dir, bld_dir, cfg_flgs, env):
+
+		log('\t  => glibc stage two [Cleanup]')
+		rmtree(bld_dir)
+		return True
+
+	gcc_src, gcc_bld = gcc_dirs
+	glibc_src, glibc_bld = glibc_dirs
+	gcc_flg, glibc_flg = cfgs
+	gcc_extra, glibc_extra = extras
+
+	blt_sentinal = path.join(BUILD_DIR, f'{target}-gcc-glibc.CXC-BUILT')
+
+	if path.exists(blt_sentinal):
+		inf(f'\t    Already built for {target}, skipping')
+		return True
+
+	gcc_flags = ' '.join(
+			gcc_flg['compile_args'] +
+			gcc_extra +
+			[f' --target={target}' + f' --with-headers={newlib_src}/newlib/libc/include']
+		)
+	gcc_env = extract_env(gcc_flg)
+
+	glibc_flags = ' '.join(
+			glibc_flg['compile_args'] +
+			glibc_extra +
+			[
+				f'--target={target}',
+			]
+		)
+	glibc_env = extract_env(glibc_flg)
+
+	if not build_gcc_stage1(gcc_src, gcc_bld, gcc_flags, gcc_env):
+		err('Unable to build GCC, aborting')
+		return False
+
+	if not build_glibc_stage1(glibc_src, glibc_bld, glibc_flags, glibc_env):
+		err('Unable to build glibc, aborting')
+		return False
+
+	if not build_gcc_stage2(gcc_src, gcc_bld, gcc_flags, gcc_env):
+		err('Unable to build GCC, aborting')
+		return False
+
+	if not build_glibc_stage2(glibc_src, glibc_bld, glibc_flags, glibc_env):
+		err('Unable to build glibc, aborting')
+		return False
+
+	if not build_gcc_stage3(gcc_src, gcc_bld, gcc_flags, gcc_env):
+		err('Unable to build GCC, aborting')
+		return False
+
+	return True
+
+def install_linux_headers(target):
+	m_arch = target.split('-')[0]
+	s_arch = '-'.join(target.split('-')[1:])
+
+	linux_arch_name = COMPILERS[m_arch][s_arch]['linux_arch']
+	if linux_arch_name is None:
+		linux_arch_name = m_arch
+
+	if not exec_cmd(
+			f'make headers-install',
+			path.join(SRC_DIR, f'linux-{COMPONENT_VERSIONS["LINUX"]}'),
+			extract_env({
+				'ARCH': linux_arch_name,
+				'INSTALL_HDR_PATH': f'{PREFIX}/{target}/'
+			})
+		):
+		err('Unable to install Linux headers for target, aborting')
+		return False
+	return True
+
+def build_prerequisites():
+	log('Building prerequisites for cross compilers')
+
+	log('\tBuilding GMP')
+	if not build_generic(
+			path.join(SRC_DIR, f'gmp-{COMPONENT_VERSIONS["GMP"]}'),
+			path.join(BUILD_DIR, f'gmp-{COMPONENT_VERSIONS["GMP"]}'),
+			COMPONENT_DEFAULTS['GMP']
+		):
+		err('Unable to build GMP')
+		return False
+
+	log('\tBuilding MPFR')
+	if not build_generic(
+			path.join(SRC_DIR, f'mpfr-{COMPONENT_VERSIONS["MPFR"]}'),
+			path.join(BUILD_DIR, f'mpfr-{COMPONENT_VERSIONS["MPFR"]}'),
+			COMPONENT_DEFAULTS['MPFR']
+		):
+		err('Unable to build MPFR')
+		return False
+
+	log('\tBuilding MPC')
+	if not build_generic(
+			path.join(SRC_DIR, f'mpc-{COMPONENT_VERSIONS["MPC"]}'),
+			path.join(BUILD_DIR, f'mpc-{COMPONENT_VERSIONS["MPC"]}'),
+			COMPONENT_DEFAULTS['MPC']
+		):
+		err('Unable to build MPC')
+		return False
+
+	print('')
+	return True
+
+
+def build_target(target, cfg):
+	log(f'Building toolchain for {target}')
+
+	m_arch = target.split('-')[0]
+	s_arch = '-'.join(target.split('-')[1:])
+
+
+	log('\tBuilding binutils')
+	if not build_generic(
+			path.join(SRC_DIR, f'binutils-{COMPONENT_VERSIONS["BINUTILS"]}'),
+			path.join(BUILD_DIR, f'binutils-{COMPONENT_VERSIONS["BINUTILS"]}'),
+			COMPONENT_DEFAULTS["BINUTILS"],
+			target,
+			COMPILERS[m_arch][s_arch]['binutils_args'] + [f'--with-lib-path={PREFIX}/{target}/lib']
+		):
+		err('Unable to build binutils, aborting')
+		return False
+
+	if cfg['build_gdb']:
+		log('\tBuilding GDB')
+		if not build_generic(
+				path.join(SRC_DIR, f'gdb-{COMPONENT_VERSIONS["GDB"]}'),
+				path.join(BUILD_DIR, f'gdb-{COMPONENT_VERSIONS["GDB"]}'),
+				COMPONENT_DEFAULTS["GDB"],
+				target,
+				COMPILERS[m_arch][s_arch]['gdb_args']
+			):
+			err('Unable to build GDB, aborting')
+			return False
+	else:
+		inf('GDB has been disabled for this platform, skipping')
+
+
+	if s_arch.split('-')[1] == 'linux':
+		log('\tInstalling Linux headers')
+		if not install_linux_headers(target):
+			err('Unable to install Linux headers for target')
+			return False
+
+		log('\tBuilding GCC and glibc')
+		if not build_gcc_glibc(
+				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+				(path.join(SRC_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}'), path.join(BUILD_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}')),
+				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["GLIBC"]),
+				target,
+				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['glibc_args'])
+			):
+			err('Unable to build GCC and/or Newlib, aborting')
+			return False
+
+
+	else:
+		log('\tBuilding GCC and Newlib')
+		if not build_gcc_newlib(
+				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+				(path.join(SRC_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}'), path.join(BUILD_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}')),
+				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["NEWLIB"]),
+				target,
+				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['newlib_args'])
+			):
+			err('Unable to build GCC and/or Newlib, aborting')
+			return False
+
+	print('')
+	return True
+
+def build_targets():
+	if not build_prerequisites():
+		err('Unable to build prerequisites')
+		return False
+
+	for arch, t in COMPILERS.items():
+		for k, v in t.items():
+			if v['build']:
+				if not build_target(f'{arch}-{k}', v):
+					err(f'Unable to build target {arch}-{k}')
+					return False
+
+	return True
+
+if __name__ == '__main__':
+	from argparse import ArgumentParser
+
+	cli = ArgumentParser(description='GCC cross-compiler batch build script')
+
+
+
+	setup_dirs()
+	print_startup()
+
+	if not download_components():
+		err('Unable to download all needed components, aborting')
+		exit(1)
+
+	if not extract_srcs():
+		err('Unable to extract sources needed for build, aborting')
+		exit(1)
+
+	if not build_targets():
+		err('Unable to build targets, aborting')
+		exit(1)
+
+
+
+	log('All compilers built, have a nice day!')
