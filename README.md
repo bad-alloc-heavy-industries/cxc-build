@@ -13,6 +13,8 @@
 | `aarch64-none-elf`       | :heavy_check_mark: |
 | `aarch64-unknown-elf`    | :heavy_check_mark: |
 | `arm-none-eabi`          | :heavy_check_mark: |
+| `frv-none-elf`           | :heavy_check_mark: |
+| `frv-unknown-elf`        | :heavy_check_mark: |
 | `ia64-none-elf`          | :heavy_check_mark: |
 | `ia64-unknown-elf`       | :heavy_check_mark: |
 | `lm32-none-elf`          | :heavy_check_mark: |

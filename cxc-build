@@ -99,6 +99,36 @@ COMPILERS = {
 		# 	'linux_arch': None,
 		# }
 	},
+	'frv': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [ ],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [ ],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		# 	'linux_arch': None,
+		# }
+	},
 	'ia64': {
 		'none-elf': {
 			'binutils_args' : [],
@@ -506,14 +536,14 @@ COMPILERS = {
 
 COMPONENT_VERSIONS = {
 	'GMP':      '6.2.0',
-	'MPFR':     '4.0.2',
+	'MPFR':     '4.1.0',
 	'MPC':      '1.1.0',
-	'BINUTILS': '2.34',
-	'GDB':      '9.1',
-	'GCC':      '10.1.0',
+	'BINUTILS': '2.35',
+	'GDB':      '9.2',
+	'GCC':      '10.2.0',
 	'NEWLIB':   '3.3.0',
-	'LINUX':    '5.6',
-	'GLIBC':    '2.31',
+	'LINUX':    '5.7.14',
+	'GLIBC':    '2.32',
 }
 
 COMPONENT_URLS = {
@@ -1156,8 +1186,6 @@ if __name__ == '__main__':
 	from argparse import ArgumentParser
 
 	cli = ArgumentParser(description='GCC cross-compiler batch build script')
-
-
 
 	setup_dirs()
 	print_startup()
