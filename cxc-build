@@ -25,6 +25,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [
@@ -42,6 +43,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [
@@ -59,6 +61,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'arm64',
 		# }
 	},
@@ -79,6 +82,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [
@@ -96,6 +100,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -108,6 +113,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -117,6 +123,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -126,6 +133,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -138,6 +146,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': False,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -147,6 +156,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': False,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -156,6 +166,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -168,6 +179,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -177,6 +189,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -186,6 +199,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -198,6 +212,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -207,6 +222,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -216,6 +232,40 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
+		# 	'linux_arch': None,
+		# }
+	},
+	'mips64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -228,6 +278,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -237,6 +288,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -246,6 +298,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'openrisc',
 		# }
 	},
@@ -258,6 +311,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -267,6 +321,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -276,6 +331,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': None,
 		# }
 	},
@@ -288,6 +344,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-elf': {
 		# 	'binutils_args' : [],
@@ -297,6 +354,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# }
 	},
 	'ppcle': {
@@ -308,6 +366,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'none-eabi': {
 			'binutils_args' : [],
@@ -317,6 +376,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -326,6 +386,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -335,6 +396,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'powerpc',
 		# }
 	},
@@ -347,6 +409,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'none-eabi': {
 			'binutils_args' : [],
@@ -356,6 +419,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -365,6 +429,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -374,6 +439,93 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
+		# 	'linux_arch': 'powerpc',
+		# }
+	},
+	'ppc64le': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		'none-eabi': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': False,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': False,
+		# 	'linux_arch': 'powerpc',
+		# }
+	},
+	'ppc64': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		'none-eabi': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': False,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': False,
 		# 	'linux_arch': 'powerpc',
 		# }
 	},
@@ -386,6 +538,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -395,6 +548,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -404,6 +558,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'riscv',
 		# }
 	},
@@ -416,6 +571,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -425,6 +581,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -434,7 +591,41 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'riscv',
+		# }
+	},
+	'rx': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': True,
+		# 	'linux_arch': None,
 		# }
 	},
 	# 's390': {
@@ -446,6 +637,7 @@ COMPILERS = {
 	# 		'build': True,
 	# 		'has_lto': True,
 	# 		'build_gdb': True,
+	#		'build_gcc': True,
 	# 		'linux_arch': None,
 	# 	}
 	# },
@@ -454,12 +646,14 @@ COMPILERS = {
 			'binutils_args' : [],
 			'gdb_args': [],
 			'gcc_args': [
-				'--disable-threads'
+				'--disable-threads',
+				'--disable-libunwind'
 			],
 			'newlib_args': [],
 			'build': True,
 			'has_lto': True,
 			'build_gdb': False,
+			'build_gcc': False,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -469,7 +663,74 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 's390',
+		# }
+	},
+	'sh4': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': False,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': True,
+		# 	'linux_arch': 'sh4',
+		# }
+	},
+	'sparc': {
+		'none-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		'unknown-elf': {
+			'binutils_args' : [],
+			'gdb_args': [],
+			'gcc_args': [],
+			'newlib_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_gcc': True,
+		},
+		# 'unknown-linux': {
+		# 	'binutils_args' : [],
+		# 	'gdb_args': [],
+		# 	'gcc_args': [],
+		# 	'glibc_args': [],
+		# 	'build': True,
+		# 	'has_lto': True,
+		# 	'build_gdb': True,
+		#	'build_gcc': True,
+		# 	'linux_arch': 'sparc',
 		# }
 	},
 	'sparc64': {
@@ -481,6 +742,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': False,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -490,6 +752,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': False,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -499,7 +762,8 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
-		# 	'linux_arch': 'sparc',
+		#	'build_gcc': True,
+		# 	'linux_arch': 'sparc64',
 		# }
 	},
 	'x86_64': {
@@ -511,6 +775,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		'unknown-elf': {
 			'binutils_args' : [],
@@ -520,6 +785,7 @@ COMPILERS = {
 			'build': True,
 			'has_lto': True,
 			'build_gdb': True,
+			'build_gcc': True,
 		},
 		# 'unknown-linux': {
 		# 	'binutils_args' : [],
@@ -529,6 +795,7 @@ COMPILERS = {
 		# 	'build': True,
 		# 	'has_lto': True,
 		# 	'build_gdb': True,
+		#	'build_gcc': True,
 		# 	'linux_arch': 'x86',
 		# }
 	}
@@ -1135,35 +1402,36 @@ def build_target(target, cfg):
 		inf('GDB has been disabled for this platform, skipping')
 
 
-	if len(s_arch) > 0 and s_arch.split('-')[1] == 'linux':
-		log('\tInstalling Linux headers')
-		if not install_linux_headers(target):
-			err('Unable to install Linux headers for target')
-			return False
+	if cfg['build_gcc']:
+		if len(s_arch) > 0 and s_arch.split('-')[1] == 'linux':
+			log('\tInstalling Linux headers')
+			if not install_linux_headers(target):
+				err('Unable to install Linux headers for target')
+				return False
 
-		log('\tBuilding GCC and glibc')
-		if not build_gcc_glibc(
-				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
-				(path.join(SRC_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}'), path.join(BUILD_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}')),
-				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["GLIBC"]),
-				target,
-				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['glibc_args'])
-			):
-			err('Unable to build GCC and/or Newlib, aborting')
-			return False
-
-
+			log('\tBuilding GCC and glibc')
+			if not build_gcc_glibc(
+					(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+					(path.join(SRC_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}'), path.join(BUILD_DIR, f'glibc-{COMPONENT_VERSIONS["GLIBC"]}')),
+					(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["GLIBC"]),
+					target,
+					(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['glibc_args'])
+				):
+				err('Unable to build GCC and/or Newlib, aborting')
+				return False
+		else:
+			log('\tBuilding GCC and Newlib')
+			if not build_gcc_newlib(
+					(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+					(path.join(SRC_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}'), path.join(BUILD_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}')),
+					(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["NEWLIB"]),
+					target,
+					(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['newlib_args'])
+				):
+				err('Unable to build GCC and/or Newlib, aborting')
+				return False
 	else:
-		log('\tBuilding GCC and Newlib')
-		if not build_gcc_newlib(
-				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
-				(path.join(SRC_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}'), path.join(BUILD_DIR, f'newlib-{COMPONENT_VERSIONS["NEWLIB"]}')),
-				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["NEWLIB"]),
-				target,
-				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['newlib_args'])
-			):
-			err('Unable to build GCC and/or Newlib, aborting')
-			return False
+		inf('GCC has been disabled for this platform, skipping')
 
 	print('')
 	return True
