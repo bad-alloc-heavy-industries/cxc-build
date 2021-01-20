@@ -77,7 +77,14 @@
 | `x86_64-none-elf`         | ✔        | ✔   | ✔    |
 | `x86_64-unknown-elf`      | ✔        | ✔   | ✔    |
 | `x86_64-unknown-linux`    | ✘        | ✘   | ✘    |
-
+| `hppa-none-elf`           | ✔        | ✔   | ✘    |
+| `hppa-unknown-elf`        | ✔        | ✔   | ✘    |
+| `hppa-hp-hpux10`          | ✔        | ✔   | ✘    |
+| `hppa-hp-hpux11`          | ✔        | ✔   | ✘    |
+| `hppa64-none-elf`         | ✔        | ✔   | ✘    |
+| `hppa64-unknown-elf`      | ✔        | ✔   | ✘    |
+| `hppa64-hp-hpux10`        | ✔        | ✔   | ✘    |
+| `hppa64-hp-hpux11`        | ✔        | ✔   | ✘    |
 
 ## TODO
 
