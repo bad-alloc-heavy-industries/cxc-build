@@ -8,83 +8,83 @@
 
 ## Currently Supported Targets
 
-| Target                    | Binutils | GDB | GCC  |
-|---------------------------|----------|-----|------|
-| `aarch64-none-elf`        | ✔        | ✔   | ✔    |
-| `aarch64-unknown-elf`     | ✔        | ✔   | ✔    |
-| `aarch64-unknown-linux`   | ✘        | ✘   | ✘    |
-| `arm-none-eabi`           | ✔        | ✔   | ✔    |
-| `arm-unknown-linux`       | ✘        | ✘   | ✘    |
-| `frv-none-elf`            | ✔        | ✔   | ✔    |
-| `frv-unknown-elf`         | ✔        | ✔   | ✔    |
-| `frv-unknown-linux`       | ✘        | ✘   | ✘    |
-| `ia64-none-elf`           | ✔        | ✘   | ✔    |
-| `ia64-unknown-elf`        | ✔        | ✘   | ✔    |
-| `ia64-unknown-linux`      | ✘        | ✘   | ✘    |
-| `microblaze-none-elf`     | ✔        | ✔   | ✔    |
-| `microblaze-unknown-elf`  | ✔        | ✔   | ✔    |
-| `microblaze-unknown-linux`| ✘        | ✘   | ✘    |
-| `mips-none-elf`           | ✔        | ✔   | ✔    |
-| `mips-unknown-elf`        | ✔        | ✔   | ✔    |
-| `mips-unknown-linux`      | ✘        | ✘   | ✘    |
-| `mips64-none-elf`         | ✔        | ✔   | ✔    |
-| `mips64-unknown-elf`      | ✔        | ✔   | ✔    |
-| `mips64-unknown-linux`    | ✘        | ✘   | ✘    |
-| `or1k-none-elf`           | ✔        | ✔   | ✔    |
-| `or1k-unknown-elf`        | ✔        | ✔   | ✔    |
-| `or1k-unknown-linux`      | ✘        | ✘   | ✘    |
-| `m68k-none-elf`           | ✔        | ✔   | ✔    |
-| `m68k-unknown-elf`        | ✔        | ✔   | ✔    |
-| `m68k-unknown-linux`      | ✘        | ✘   | ✘    |
-| `lm32-none-elf`           | ✔        | ✔   | ✔    |
-| `ppcle-none-elf`          | ✔        | ✔   | ✔    |
-| `ppcle-none-eabi`         | ✔        | ✔   | ✔    |
-| `ppcle-unknown-elf`       | ✔        | ✔   | ✔    |
-| `ppcle-unknown-linux`     | ✘        | ✘   | ✘    |
-| `ppc-none-elf`            | ✔        | ✔   | ✔    |
-| `ppc-none-eabi`           | ✔        | ✔   | ✔    |
-| `ppc-unknown-elf`         | ✔        | ✔   | ✔    |
-| `ppc-unknown-linux`       | ✘        | ✘   | ✘    |
-| `ppc64le-none-elf`        | ✔        | ✔   | ✘    |
-| `ppc64le-none-eabi`       | ✘        | ✘   | ✘    |
-| `ppc64le-unknown-elf`     | ✔        | ✔   | ✘    |
-| `ppc64le-unknown-linux`   | ✘        | ✘   | ✘    |
-| `ppc64-none-elf`          | ✔        | ✔   | ✘    |
-| `ppc64-none-eabi`         | ✘        | ✘   | ✘    |
-| `ppc64-unknown-elf`       | ✔        | ✔   | ✘    |
-| `ppc64-unknown-linux`     | ✘        | ✘   | ✘    |
-| `riscv32-none-elf`        | ✔        | ✔   | ✔    |
-| `riscv32-unknown-elf`     | ✔        | ✔   | ✔    |
-| `riscv32-unknown-linux`   | ✘        | ✘   | ✘    |
-| `riscv64-none-elf`        | ✔        | ✔   | ✔    |
-| `riscv64-unknown-elf`     | ✔        | ✔   | ✔    |
-| `riscv64-unknown-linux`   | ✘        | ✘   | ✘    |
-| `rx-none-elf`             | ✔        | ✔   | ✔    |
-| `rx-unknown-elf`          | ✔        | ✔   | ✔    |
-| `rx-unknown-linux`        | ✘        | ✘   | ✘    |
-| `s390-unknown-linux`      | ✘        | ✘   | ✘    |
-| `s390x-ibm-tpf`           | ✔        | ✘   | ✘    |
-| `s390x-unknown-linux`     | ✘        | ✘   | ✘    |
-| `sh4-none-elf`            | ✔        | ✔   | ✘    |
-| `sh4-unknown-elf`         | ✔        | ✔   | ✘    |
-| `sh4-unknown-linux`       | ✘        | ✘   | ✘    |
-| `sparc-none-elf`          | ✔        | ✔   | ✔    |
-| `sparc-unknown-elf`       | ✔        | ✔   | ✔    |
-| `sparc-unknown-linux`     | ✘        | ✘   | ✘    |
-| `sparc64-none-elf`        | ✔        | ✔   | ✘    |
-| `sparc64-unknown-elf`     | ✔        | ✔   | ✘    |
-| `sparc64-unknown-linux`   | ✘        | ✘   | ✘    |
-| `x86_64-none-elf`         | ✔        | ✔   | ✔    |
-| `x86_64-unknown-elf`      | ✔        | ✔   | ✔    |
-| `x86_64-unknown-linux`    | ✘        | ✘   | ✘    |
-| `hppa-none-elf`           | ✔        | ✔   | ✘    |
-| `hppa-unknown-elf`        | ✔        | ✔   | ✘    |
-| `hppa-hp-hpux10`          | ✔        | ✔   | ✘    |
-| `hppa-hp-hpux11`          | ✔        | ✔   | ✘    |
-| `hppa64-none-elf`         | ✔        | ✔   | ✘    |
-| `hppa64-unknown-elf`      | ✔        | ✔   | ✘    |
-| `hppa64-hp-hpux10`        | ✔        | ✔   | ✘    |
-| `hppa64-hp-hpux11`        | ✔        | ✔   | ✘    |
+| Target                    | Binutils | GDB | GCC  | libc    |
+|---------------------------|----------|-----|------|---------|
+| `aarch64-none-elf`        | ✔        | ✔   | ✔    | newlib |
+| `aarch64-unknown-elf`     | ✔        | ✔   | ✔    | newlib |
+| `aarch64-unknown-linux`   | ✘        | ✘   | ✘    | glibc  |
+| `arm-none-eabi`           | ✔        | ✔   | ✔    | newlib |
+| `arm-unknown-linux`       | ✘        | ✘   | ✘    | glibc  |
+| `frv-none-elf`            | ✔        | ✔   | ✔    | newlib |
+| `frv-unknown-elf`         | ✔        | ✔   | ✔    | newlib |
+| `frv-unknown-linux`       | ✘        | ✘   | ✘    | glibc  |
+| `ia64-none-elf`           | ✔        | ✘   | ✔    | newlib |
+| `ia64-unknown-elf`        | ✔        | ✘   | ✔    | newlib |
+| `ia64-unknown-linux`      | ✘        | ✘   | ✘    | glibc  |
+| `microblaze-none-elf`     | ✔        | ✔   | ✔    | newlib |
+| `microblaze-unknown-elf`  | ✔        | ✔   | ✔    | newlib |
+| `microblaze-unknown-linux`| ✘        | ✘   | ✘    | glibc  |
+| `mips-none-elf`           | ✔        | ✔   | ✔    | newlib |
+| `mips-unknown-elf`        | ✔        | ✔   | ✔    | newlib |
+| `mips-unknown-linux`      | ✘        | ✘   | ✘    | glibc  |
+| `mips64-none-elf`         | ✔        | ✔   | ✔    | newlib |
+| `mips64-unknown-elf`      | ✔        | ✔   | ✔    | newlib |
+| `mips64-unknown-linux`    | ✘        | ✘   | ✘    | glibc  |
+| `or1k-none-elf`           | ✔        | ✔   | ✔    | newlib |
+| `or1k-unknown-elf`        | ✔        | ✔   | ✔    | newlib |
+| `or1k-unknown-linux`      | ✘        | ✘   | ✘    | glibc  |
+| `m68k-none-elf`           | ✔        | ✔   | ✔    | newlib |
+| `m68k-unknown-elf`        | ✔        | ✔   | ✔    | newlib |
+| `m68k-unknown-linux`      | ✘        | ✘   | ✘    | glibc  |
+| `lm32-none-elf`           | ✔        | ✔   | ✔    | newlib |
+| `ppcle-none-elf`          | ✔        | ✔   | ✔    | newlib |
+| `ppcle-none-eabi`         | ✔        | ✔   | ✔    | newlib |
+| `ppcle-unknown-elf`       | ✔        | ✔   | ✔    | newlib |
+| `ppcle-unknown-linux`     | ✘        | ✘   | ✘    | glibc  |
+| `ppc-none-elf`            | ✔        | ✔   | ✔    | newlib |
+| `ppc-none-eabi`           | ✔        | ✔   | ✔    | newlib |
+| `ppc-unknown-elf`         | ✔        | ✔   | ✔    | newlib |
+| `ppc-unknown-linux`       | ✘        | ✘   | ✘    | glibc  |
+| `ppc64le-none-elf`        | ✔        | ✔   | ✘    | none   |
+| `ppc64le-none-eabi`       | ✘        | ✘   | ✘    | none   |
+| `ppc64le-unknown-elf`     | ✔        | ✔   | ✘    | none   |
+| `ppc64le-unknown-linux`   | ✘        | ✘   | ✘    | none   |
+| `ppc64-none-elf`          | ✔        | ✔   | ✘    | none   |
+| `ppc64-none-eabi`         | ✘        | ✘   | ✘    | none   |
+| `ppc64-unknown-elf`       | ✔        | ✔   | ✘    | none   |
+| `ppc64-unknown-linux`     | ✘        | ✘   | ✘    | none   |
+| `riscv32-none-elf`        | ✔        | ✔   | ✔    | newlib |
+| `riscv32-unknown-elf`     | ✔        | ✔   | ✔    | newlib |
+| `riscv32-unknown-linux`   | ✘        | ✘   | ✘    | glibc  |
+| `riscv64-none-elf`        | ✔        | ✔   | ✔    | newlib |
+| `riscv64-unknown-elf`     | ✔        | ✔   | ✔    | newlib |
+| `riscv64-unknown-linux`   | ✘        | ✘   | ✘    | glibc  |
+| `rx-none-elf`             | ✔        | ✔   | ✔    | newlib |
+| `rx-unknown-elf`          | ✔        | ✔   | ✔    | newlib |
+| `rx-unknown-linux`        | ✘        | ✘   | ✘    | glibc  |
+| `s390-unknown-linux`      | ✘        | ✘   | ✘    | none   |
+| `s390x-ibm-tpf`           | ✔        | ✘   | ✘    | none   |
+| `s390x-unknown-linux`     | ✘        | ✘   | ✘    | none   |
+| `sh4-none-elf`            | ✔        | ✔   | ✘    | none   |
+| `sh4-unknown-elf`         | ✔        | ✔   | ✘    | none   |
+| `sh4-unknown-linux`       | ✘        | ✘   | ✘    | none   |
+| `sparc-none-elf`          | ✔        | ✔   | ✔    | newlib |
+| `sparc-unknown-elf`       | ✔        | ✔   | ✔    | newlib |
+| `sparc-unknown-linux`     | ✘        | ✘   | ✘    | glibc  |
+| `sparc64-none-elf`        | ✔        | ✔   | ✘    | none   |
+| `sparc64-unknown-elf`     | ✔        | ✔   | ✘    | none   |
+| `sparc64-unknown-linux`   | ✘        | ✘   | ✘    | glibc  |
+| `x86_64-none-elf`         | ✔        | ✔   | ✔    | newlib |
+| `x86_64-unknown-elf`      | ✔        | ✔   | ✔    | newlib |
+| `x86_64-unknown-linux`    | ✘        | ✘   | ✘    | glibc  |
+| `hppa-none-elf`           | ✔        | ✔   | ✘    | none   |
+| `hppa-unknown-elf`        | ✔        | ✔   | ✘    | none   |
+| `hppa64-none-elf`         | ✔        | ✔   | ✘    | none   |
+| `hppa64-unknown-elf`      | ✔        | ✔   | ✘    | none   |
+| `hppa1.1-hp-hpux10`       | ✔        | ✘   | ✔    | none   |
+| `hppa1.1-hp-hpux11`       | ✔        | ✘   | ✔    | none   |
+| `hppa2.0-hp-hpux10`       | ✔        | ✘   | ✔    | none   |
+| `hppa2.0-hp-hpux11`       | ✔        | ✘   | ✔    | none   |
 
 ## TODO
 
