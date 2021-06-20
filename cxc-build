@@ -1070,7 +1070,7 @@ COMPONENT_URLS = {
 	'MPC':      f'https://ftp.gnu.org/gnu/mpc/mpc-{COMPONENT_VERSIONS["MPC"]}.tar.gz',
 	'BINUTILS': f'https://ftp.gnu.org/gnu/binutils/binutils-{COMPONENT_VERSIONS["BINUTILS"]}.tar.xz',
 	'GDB':      f'https://ftp.gnu.org/gnu/gdb/gdb-{COMPONENT_VERSIONS["GDB"]}.tar.xz',
-	'GCC':      f'https://ftp.gnu.org/gnu/gcc/gcc-{COMPONENT_VERSIONS["GCC"]}.tar.xz',
+	'GCC':      f'https://ftp.gnu.org/gnu/gcc/gcc-{COMPONENT_VERSIONS["GCC"]}/gcc-{COMPONENT_VERSIONS["GCC"]}.tar.xz',
 	'NEWLIB':   f'https://sourceware.org/pub/newlib/newlib-{COMPONENT_VERSIONS["NEWLIB"]}.tar.gz',
 	'LINUX':    f'https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-{COMPONENT_VERSIONS["LINUX"]}.tar.xz',
 	'GLIBC':    f'https://ftp.gnu.org/gnu/glibc/glibc-{COMPONENT_VERSIONS["GLIBC"]}.tar.xz',
