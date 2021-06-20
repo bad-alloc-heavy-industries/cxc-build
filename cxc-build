@@ -1058,7 +1058,7 @@ COMPONENT_VERSIONS = {
 	'MPC':      '1.2.1',
 	'BINUTILS': '2.35.1',
 	'GDB':      '10.1',
-	'GCC':      '10.2.0',
+	'GCC':      '10.3.0',
 	'NEWLIB':   '3.3.0',
 	'LINUX':    '5.10.9',
 	'GLIBC':    '2.32',
