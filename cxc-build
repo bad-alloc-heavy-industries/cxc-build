@@ -1176,7 +1176,7 @@ COMPONENT_DEFAULTS = {
 			'--enable-cet'
 		],
 		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
-		'LDFLAGS': f'-Wl,-rpath-link,{PREFIX}/lib -Wl,-rpath,{PREFIX}/lib:/usr/lib64:/lib64:/usr/lib:/lib',
+		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
 		'LDFLAGS_FOR_BUILD': '',
 		'CFLAGS': '',
 		'CXXFLAGS': ''
@@ -1184,12 +1184,12 @@ COMPONENT_DEFAULTS = {
 	'GDB': {
 		'compile_args': [
 			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
-			'--disable-shared', '--enable-static', '--enable-lto', '--with-python',
+			'--enable-shared', '--disable-static', '--enable-lto', '--with-python',
 			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--disable-binutils', '--disable-ld',
 			'--disable-gold', '--disable-gas', '--disable-sim', '--disable-gprof', '--disable-install-libiberty',
 		],
 		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
-		'LDFLAGS': f'-Wl,-rpath-link,{PREFIX}/lib -Wl,-rpath,{PREFIX}/lib:/usr/lib64:/lib64:/usr/lib:/lib',
+		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
 		'LDFLAGS_FOR_BUILD': '',
 		'CFLAGS': '',
 		'CXXFLAGS': ''
@@ -1199,7 +1199,7 @@ COMPONENT_DEFAULTS = {
 			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
 			'--with-gnu-as', '--with-gnu-ld', '--with-system-zlib', '--enable-languages=c,c++,lto',
 			'--enable-__cxa_atexit', '--enable-clocale=gnu', '--enable-checking=release', '--disable-libstdcxx-pch',
-			'--enable-lto', '--disable-linker-build-id', '--enable-plugin', #'--with-linker-hash-style=gnu',
+			'--enable-lto', '--enable-linker-build-id', '--enable-plugin', '--with-linker-hash-style=gnu',
 			'--enable-gnu-unique-object', '--enable-long-long', '--enable-c99', '--disable-install-libiberty',
 			f'--with-local-prefix={SYSROOT}', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
 			f'--with-sysroot={SYSROOT}', '--disable-libatomic', '--disable-libitm', '--disable-libsanitizer',
