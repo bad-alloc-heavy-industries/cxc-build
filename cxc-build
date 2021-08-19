@@ -1182,9 +1182,10 @@ COMPONENT_DEFAULTS = {
 			'--enable-__cxa_atexit', '--enable-clocale=gnu', '--enable-checking=release', '--disable-libstdcxx-pch',
 			'--enable-lto', '--disable-linker-build-id', '--enable-plugin', #'--with-linker-hash-style=gnu',
 			'--enable-gnu-unique-object', '--enable-long-long', '--enable-c99', '--disable-install-libiberty',
-			f'--with-local-prefix={SYSROOT}/local', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
+			f'--with-local-prefix={SYSROOT}', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
 			f'--with-sysroot={SYSROOT}', '--disable-libatomic', '--disable-libitm', '--disable-libsanitizer',
-			'--disable-libmudflap','--disable-libssp', '--disable-libunwind', '--disable-libstdcxx-time'
+			'--disable-libmudflap','--disable-libssp', '--disable-libunwind', '--disable-libstdcxx-time',
+			'--enable-initfini-array', f'--libexecdir={PREFIX}/lib'
 		],
 		'LD_LIBRARY_PATH': '',
 		'LDFLAGS': f'-Wl,-rpath,{PREFIX}/lib',
@@ -1211,7 +1212,17 @@ COMPONENT_DEFAULTS = {
 		'LDFLAGS_FOR_BUILD': '',
 		'CFLAGS': '',
 		'CXXFLAGS': '',
-	}
+	},
+	'AVR-LIBC': {
+		'compile_args': [
+			f'--prefix={PREFIX}', '--enable-device-lib', f'--build={BUILD_TRIP}'
+		],
+		'LD_LIBRARY_PATH': '',
+		'LDFLAGS': '',
+		'LDFLAGS_FOR_BUILD': '',
+		'CFLAGS': '',
+		'CXXFLAGS': '',
+	},
 }
 
 # WORKING_DIR  =  mkdtemp()
@@ -1258,6 +1269,7 @@ def print_startup():
 	log(f'  NEWLIB:   {COMPONENT_VERSIONS["NEWLIB"]}')
 	log(f'  LINUX:    {COMPONENT_VERSIONS["LINUX"]}')
 	log(f'  GLIBC:    {COMPONENT_VERSIONS["GLIBC"]}')
+	log(f'  AVR-LIBC: {COMPONENT_VERSIONS["AVR-LIBC"]}')
 	print('')
 	log(f'Install prefix:     {PREFIX}')
 	log(f'System root:        {SYSROOT}')
