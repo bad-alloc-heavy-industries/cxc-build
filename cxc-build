@@ -2,7 +2,6 @@
 #SPDX-License-Identifier: BSD-3-Clause
 
 from os import path, mkdir
-from tempfile import mkdtemp
 from sys import exit
 from multiprocessing import cpu_count
 from shutil import rmtree
@@ -737,7 +736,7 @@ COMPILERS = {
 	# 		'build_gdb': True,
 	#		'build_libc': True,
 	#		'build_gcc': True,
-			'build_linux': Falseue,
+	# 		'build_linux': False,
 	# 		'linux_arch': None,
 	# 	}
 	# },
@@ -1100,6 +1099,7 @@ COMPONENT_VERSIONS = {
 	'NEWLIB':   '3.3.0',
 	'LINUX':    '5.10.9',
 	'GLIBC':    '2.32',
+	'AVR-LIBC': '2.0.0',
 }
 
 COMPONENT_URLS = {
@@ -1112,6 +1112,7 @@ COMPONENT_URLS = {
 	'NEWLIB':   f'https://sourceware.org/pub/newlib/newlib-{COMPONENT_VERSIONS["NEWLIB"]}.tar.gz',
 	'LINUX':    f'https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-{COMPONENT_VERSIONS["LINUX"]}.tar.xz',
 	'GLIBC':    f'https://ftp.gnu.org/gnu/glibc/glibc-{COMPONENT_VERSIONS["GLIBC"]}.tar.xz',
+	'AVR-LIBC': f'https://download.savannah.gnu.org/releases/avr-libc/avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}.tar.bz2',
 }
 
 HOST_TRIP  = 'x86_64-pc-linux-gnu'
@@ -1153,8 +1154,10 @@ COMPONENT_DEFAULTS = {
 	'BINUTILS': {
 		'compile_args': [
 			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
-			'--disable-shared', '--enable-host-shared', '--enable-64-bit-bfd', '--enable-static', '--enable-lto',
-			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--enable-gold', '--disable-install-libiberty',
+			'--enable-shared', '--enable-host-shared', '--enable-64-bit-bfd', '--disable-static', '--enable-lto',
+			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--disable-install-libiberty', '--enable-plugins',
+			'--enable-gold', '--enable-ld', '--enable-deterministic-archives', '--with-pic', '--with-system-zlib',
+			'--enable-cet'
 		],
 		'LD_LIBRARY_PATH': f'{PREFIX}/lib',
 		'LDFLAGS': f'-Wl,-rpath-link,{PREFIX}/lib -Wl,-rpath,{PREFIX}/lib:/usr/lib64:/lib64:/usr/lib:/lib',
