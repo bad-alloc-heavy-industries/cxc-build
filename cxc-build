@@ -1723,7 +1723,6 @@ def build_gcc_glibc(gcc_dirs, glibc_dirs, cfgs, target, extras, bld_cfg):
 		inf('\t  => Skipping GCC stage two (no libc)')
 		inf('\t  => Skipping GCC stage three (no libc)')
 
-
 	return True
 
 def install_linux_headers(target):
@@ -1744,7 +1743,6 @@ def install_linux_headers(target):
 		):
 		err('Unable to install Linux headers for target, aborting')
 		return False
-
 
 	if not exec_cmd(
 			f'make prepare',
@@ -1803,13 +1801,11 @@ def build_prerequisites():
 	print('')
 	return True
 
-
 def build_target(target, cfg):
 	log(f'Building toolchain for {target}')
 
 	m_arch = target.split('-')[0]
 	s_arch = '-'.join(target.split('-')[1:])
-
 
 	log('\tBuilding binutils')
 	if not build_generic(
@@ -1836,7 +1832,6 @@ def build_target(target, cfg):
 	else:
 		inf('GDB has been disabled for this platform, skipping')
 
-
 	if cfg['build_gcc']:
 		if len(s_arch) > 0 and s_arch.split('-')[0] == 'linux' and cfg['build_linux']:
 			log('\tInstalling Linux headers')
@@ -1859,12 +1854,12 @@ def build_target(target, cfg):
 		elif m_arch == 'avr':
 			log('\tBuilding GCC and avr-libc')
 			if not build_gcc_avrlibc(
-				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
-				(path.join(SRC_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}'), path.join(BUILD_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}')),
-				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["AVR-LIBC"]),
-				target,
-				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['avrlibc_args'])
-			):
+					(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+					(path.join(SRC_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}'), path.join(BUILD_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}')),
+					(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["AVR-LIBC"]),
+					target,
+					(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['avrlibc_args'])
+				):
 				err('Unable to build GCC and/or avr-libc, aborting')
 				return False
 
