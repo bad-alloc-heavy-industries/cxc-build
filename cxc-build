@@ -113,6 +113,22 @@ COMPILERS = {
 		# 	'linux_arch': None,
 		# }
 	},
+	'avr': {
+		'': {
+			'binutils_args': [],
+			'gdb_args': ['--enable-ld'],
+			'gcc_args': [
+				'--enable-shared',
+			],
+			'avrlibc_args': [],
+			'build': True,
+			'has_lto': True,
+			'build_gdb': True,
+			'build_libc': True,
+			'build_gcc': True,
+			'build_linux': False,
+		}
+	},
 	'frv': {
 		'none-elf': {
 			'binutils_args' : [],
@@ -1583,7 +1599,7 @@ def build_gcc_avrlibc(gcc_dirs, avrlibc_dirs, cfgs, target, extras, bld_cfg):
 		return True
 
 	gcc_flags = ' '.join(
-			#gcc_flg['compile_args'] +
+			gcc_flg['compile_args'] +
 			gcc_extra +
 			[
 				f'--target={target}',
