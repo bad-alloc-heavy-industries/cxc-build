@@ -1548,6 +1548,81 @@ def build_gcc_newlib(gcc_dirs, newlib_dirs, cfgs, target, extras, bld_cfg):
 
 	return True
 
+def build_gcc_avrlibc(gcc_dirs, avrlibc_dirs, cfgs, target, extras):
+	def build_avrlibc(src_dir, bld_dir, cfg_flgs, env):
+		if not path.exists(bld_dir):
+			mkdir(bld_dir)
+
+		log(f'\t  => avr-libc [Configure]')
+		if exec_cmd(f'{src_dir}/configure {cfg_flgs}', bld_dir, env) != 0:
+			return False
+
+		log(f'\t  => avr-libc [Build]')
+		if exec_cmd(f'make -j {cpu_count()}', bld_dir, env) != 0:
+			return False
+
+		log(f'\t  => avr-libc [Install]')
+		if exec_cmd('make install', bld_dir, env) != 0:
+			return False
+
+		log(f'\t  => avr-libc [Cleanup]')
+		rmtree(bld_dir)
+		return True
+
+	gcc_src, gcc_bld = gcc_dirs
+	avrlibc_src, avrlibc_bld = avrlibc_dirs
+	gcc_flg, avrlibc_flg = cfgs
+	gcc_extra, avrlibc_extra = extras
+
+	blt_sentinal = path.join(BUILD_DIR, f'{target}-gcc-avrlibc.CXC-BUILT')
+
+	if path.exists(blt_sentinal):
+		inf(f'\t    Already built for {target}, skipping')
+		return True
+
+	gcc_flags = ' '.join(
+			#gcc_flg['compile_args'] +
+			gcc_extra +
+			[
+				f'--target={target}',
+				'--with-avrlibc',
+				f'--with-headers={avrlibc_src}/include'
+			]
+		)
+	gcc_env = extract_env(gcc_flg)
+
+	avrlibc_flags = ' '.join(
+			avrlibc_flg['compile_args'] +
+			avrlibc_extra +
+			[
+				f' --host={target}',
+			]
+		)
+	avrlibc_env = extract_env(avrlibc_flg)
+
+	if not build_gcc_stage1(gcc_src, gcc_bld, gcc_flags + ' --without-headers', gcc_env):
+		err('Unable to build GCC, aborting')
+		return False
+
+	if not build_avrlibc(avrlibc_src, avrlibc_bld, avrlibc_flags, avrlibc_env):
+		err('Unable to build avr-libc, aborting')
+		return False
+
+	inf('\t  => Skipping GCC stage two')
+
+	if not build_gcc_stage3(
+			gcc_src, gcc_bld,
+			gcc_flags, #+ f' --with-headers={PREFIX}/{target}/include',
+			gcc_env
+		):
+		err('Unable to build GCC, aborting')
+		return False
+
+	with open(blt_sentinal, 'wb') as f:
+		pass
+
+	return True
+
 def build_gcc_glibc(gcc_dirs, glibc_dirs, cfgs, target, extras, bld_cfg):
 	def build_glibc_stage1(src_dir, bld_dir, cfg_flgs, env):
 		if not path.exists(bld_dir):
@@ -1780,6 +1855,19 @@ def build_target(target, cfg):
 				):
 				err('Unable to build GCC and/or Newlib, aborting')
 				return False
+
+		elif m_arch == 'avr':
+			log('\tBuilding GCC and avr-libc')
+			if not build_gcc_avrlibc(
+				(path.join(SRC_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}'), path.join(BUILD_DIR, f'gcc-{COMPONENT_VERSIONS["GCC"]}')),
+				(path.join(SRC_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}'), path.join(BUILD_DIR, f'avr-libc-{COMPONENT_VERSIONS["AVR-LIBC"]}')),
+				(COMPONENT_DEFAULTS["GCC"], COMPONENT_DEFAULTS["AVR-LIBC"]),
+				target,
+				(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['avrlibc_args'])
+			):
+				err('Unable to build GCC and/or avr-libc, aborting')
+				return False
+
 		else:
 			log('\tBuilding GCC and Newlib')
 			if not build_gcc_newlib(
@@ -1806,8 +1894,9 @@ def build_targets():
 	for arch, t in COMPILERS.items():
 		for k, v in t.items():
 			if v['build']:
-				if not build_target(f'{arch}-{k}' if len(k) > 0 else arch, v):
-					err(f'Unable to build target {arch}-{k}')
+				buildArch = f'{arch}-{k}' if len(k) > 0 else arch
+				if not build_target(buildArch, v):
+					err(f'Unable to build target {buildArch}')
 					return False
 
 	return True
@@ -1831,7 +1920,5 @@ if __name__ == '__main__':
 	if not build_targets():
 		err('Unable to build targets, aborting')
 		exit(1)
-
-
 
 	log('All compilers built, have a nice day!')
