@@ -1856,7 +1856,7 @@ def build_target(target, cfg):
 		inf('GDB has been disabled for this platform, skipping')
 
 	if cfg['build_gcc']:
-		if len(s_arch) > 0 and s_arch.split('-')[0] == 'linux' and cfg['build_linux']:
+		if len(s_arch) > 0 and s_arch.split('-')[1] == 'linux' and cfg['build_linux']:
 			log('\tInstalling Linux headers')
 			if not install_linux_headers(target):
 				err('Unable to install Linux headers for target')
@@ -1871,7 +1871,7 @@ def build_target(target, cfg):
 					(COMPILERS[m_arch][s_arch]['gcc_args'], COMPILERS[m_arch][s_arch]['glibc_args']),
 					cfg
 				):
-				err('Unable to build GCC and/or Newlib, aborting')
+				err('Unable to build GCC and/or glibc, aborting')
 				return False
 
 		elif m_arch == 'avr':
