@@ -1184,7 +1184,7 @@ COMPONENT_DEFAULTS = {
 	'GDB': {
 		'compile_args': [
 			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
-			'--enable-shared', '--disable-static', '--enable-lto', '--with-python',
+			'--enable-shared', '--enable-static', '--enable-lto', '--with-python',
 			f'--with-sysroot={SYSROOT}', '--with-system-zlib', '--disable-binutils', '--disable-ld',
 			'--disable-gold', '--disable-gas', '--disable-sim', '--disable-gprof', '--disable-install-libiberty',
 		],
