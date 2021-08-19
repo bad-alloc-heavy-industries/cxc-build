@@ -1341,27 +1341,20 @@ def extract_env(flgs):
 
 	_env['PATH'] = f'{PREFIX}/bin:' + _env['PATH']
 
-	if 'LD_LIBRARY_PATH' in flgs:
-		if flgs['LD_LIBRARY_PATH'] != '':
-			_env['LD_LIBRARY_PATH'] = flgs['LD_LIBRARY_PATH']
+	if 'LD_LIBRARY_PATH' in flgs and flgs['LD_LIBRARY_PATH'] != '':
+		_env['LD_LIBRARY_PATH'] = flgs['LD_LIBRARY_PATH']
 
-	if 'LDFLAGS' in flgs:
-		if flgs['LDFLAGS'] != '':
-			_env['LDFLAGS'] = flgs['LDFLAGS']
+	if 'LDFLAGS' in flgs and flgs['LDFLAGS'] != '':
+		_env['LDFLAGS'] = flgs['LDFLAGS']
 
-	if 'LDFLAGS_FOR_BUILD' in flgs:
-		if flgs['LDFLAGS_FOR_BUILD'] != '':
-			_env['LDFLAGS_FOR_BUILD'] = flgs['LDFLAGS_FOR_BUILD']
+	if 'LDFLAGS_FOR_BUILD' in flgs and flgs['LDFLAGS_FOR_BUILD'] != '':
+		_env['LDFLAGS_FOR_BUILD'] = flgs['LDFLAGS_FOR_BUILD']
 
-	if 'CFLAGS' in flgs:
-		if flgs['CFLAGS'] != '':
-			_env['CFLAGS'] = flgs['CFLAGS']
+	if 'CFLAGS' in flgs and flgs['CFLAGS'] != '':
+		_env['CFLAGS'] = flgs['CFLAGS']
 
-	if 'CXXFLAGS' in flgs:
-		if flgs['CXXFLAGS'] != '':
-			_env['CXXFLAGS'] = flgs['CXXFLAGS']
-
-
+	if 'CXXFLAGS' in flgs and flgs['CXXFLAGS'] != '':
+		_env['CXXFLAGS'] = flgs['CXXFLAGS']
 
 	return _env
 
@@ -1383,9 +1376,7 @@ def exec_cmd(cmd, cwd, env = None):
 		with open(f'{WORKING_DIR}/cxc-build.stderr', 'w') as stderr:
 			stderr.write(res.stderr.decode('UTF-8'))
 
-
 	return res.returncode
-
 
 def build_generic(src_dir, bld_dir, flgs, target = BUILD_TRIP, extra = []):
 	blt_sentinal = path.join(src_dir, f'{target}.CXC-BUILT')
@@ -1451,7 +1442,6 @@ def build_gcc_stage2(src_dir, bld_dir, cfg_flgs, env):
 
 	return True
 
-
 def build_gcc_stage3(src_dir, bld_dir, cfg_flgs, env):
 	log('\t  => GCC stage three [Build]')
 	if exec_cmd(f'make -j {cpu_count()}', bld_dir, env) != 0:
@@ -1464,7 +1454,6 @@ def build_gcc_stage3(src_dir, bld_dir, cfg_flgs, env):
 	log('\t  => GCC stage three [Cleanup]')
 	rmtree(bld_dir)
 	return True
-
 
 def build_gcc_newlib(gcc_dirs, newlib_dirs, cfgs, target, extras, bld_cfg):
 	def build_newlib(src_dir, bld_dir, cfg_flgs, env):
