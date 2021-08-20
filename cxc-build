@@ -116,10 +116,8 @@ COMPILERS = {
 	'avr': {
 		'': {
 			'binutils_args': [],
-			'gdb_args': ['--enable-ld'],
-			'gcc_args': [
-				'--enable-shared'
-			],
+			'gdb_args': [],
+			'gcc_args': [],
 			'avrlibc_args': [],
 			'build': True,
 			'has_lto': True,
@@ -1111,7 +1109,7 @@ COMPONENT_VERSIONS = {
 	'MPC':      '1.2.1',
 	'BINUTILS': '2.35.1',
 	'GDB':      '10.1',
-	'GCC':      '10.3.0',
+	'GCC':      '11.2.0',
 	'NEWLIB':   '3.3.0',
 	'LINUX':    '5.10.9',
 	'GLIBC':    '2.32',
@@ -1607,7 +1605,11 @@ def build_gcc_avrlibc(gcc_dirs, avrlibc_dirs, cfgs, target, extras, bld_cfg):
 				'--with-avrlibc',
 				f'--with-headers={avrlibc_src}/include'
 			]
-		).replace(f' --with-sysroot={SYSROOT}', '')
+		).replace(
+			f' --with-sysroot={SYSROOT}', ''
+		).replace(
+			' --with-linker-hash-style=gnu', ''
+		)
 	gcc_env = extract_env(gcc_flg)
 
 	avrlibc_flags = ' '.join(
