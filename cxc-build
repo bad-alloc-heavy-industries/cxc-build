@@ -118,7 +118,7 @@ COMPILERS = {
 			'binutils_args': [],
 			'gdb_args': ['--enable-ld'],
 			'gcc_args': [
-				'--enable-shared',
+				'--enable-shared'
 			],
 			'avrlibc_args': [],
 			'build': True,
@@ -1199,9 +1199,9 @@ COMPONENT_DEFAULTS = {
 			f'--prefix={PREFIX}', f'--with-gmp={PREFIX}', f'--with-mpfr={PREFIX}', f'--with-mpc={PREFIX}',
 			'--with-gnu-as', '--with-gnu-ld', '--with-system-zlib', '--enable-languages=c,c++,lto',
 			'--enable-__cxa_atexit', '--enable-clocale=gnu', '--enable-checking=release', '--disable-libstdcxx-pch',
-			'--enable-lto', '--enable-linker-build-id', '--enable-plugin', '--with-linker-hash-style=gnu',
+			'--enable-lto', '--disable-linker-build-id', '--enable-plugin', '--with-linker-hash-style=gnu',
 			'--enable-gnu-unique-object', '--enable-long-long', '--enable-c99', '--disable-install-libiberty',
-			f'--with-local-prefix={SYSROOT}', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
+			f'--with-local-prefix={SYSROOT}/local', '--disable-libquadmath', '--with-zstd', '--enable-threads=no',
 			f'--with-sysroot={SYSROOT}', '--disable-libatomic', '--disable-libitm', '--disable-libsanitizer',
 			'--disable-libmudflap','--disable-libssp', '--disable-libunwind', '--disable-libstdcxx-time',
 			'--enable-initfini-array', f'--libexecdir={PREFIX}/lib'
@@ -1403,6 +1403,7 @@ def exec_cmd(cmd, cwd, env = None):
 	if res.returncode != 0:
 		err(f'{res.stderr.decode("UTF-8")}')
 		with open(f'{WORKING_DIR}/cxc-build.stdout', 'w') as stdout:
+			stdout.write(f'{cmd}\n')
 			stdout.write(res.stdout.decode('UTF-8'))
 		with open(f'{WORKING_DIR}/cxc-build.stderr', 'w') as stderr:
 			stderr.write(res.stderr.decode('UTF-8'))
@@ -1606,7 +1607,7 @@ def build_gcc_avrlibc(gcc_dirs, avrlibc_dirs, cfgs, target, extras, bld_cfg):
 				'--with-avrlibc',
 				f'--with-headers={avrlibc_src}/include'
 			]
-		)
+		).replace(f' --with-sysroot={SYSROOT}', '')
 	gcc_env = extract_env(gcc_flg)
 
 	avrlibc_flags = ' '.join(
