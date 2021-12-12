@@ -1,0 +1,37 @@
+{
+	"base_name": "alpha",
+	"enabled": true,
+
+	"targets": [
+		{
+			"name": "linux-gnu",
+			"enabled": false,
+			"libc": "",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+
+			],
+			"glibc_args": [
+				"--disable-lto"
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": false,
+			"build_gdb": true,
+			"build_libc": false,
+			"build_gcc": true,
+			"build_linux": false,
+		}
+	]
+}

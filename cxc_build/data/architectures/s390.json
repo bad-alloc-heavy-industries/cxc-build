@@ -1,0 +1,37 @@
+{
+	"base_name": "s390",
+	"enabled": false,
+
+	"targets": [
+		{
+			"name": "unknown-linux",
+			"enabled": false,
+			"libc": "glibc",
+
+			"binutils_args": [
+
+			],
+			"gdb_args": [
+
+			],
+			"gcc_args": [
+
+			],
+			"newlib_args": [
+
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": true,
+		}
+	]
+}

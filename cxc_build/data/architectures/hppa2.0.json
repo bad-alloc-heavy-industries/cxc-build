@@ -1,0 +1,67 @@
+{
+	"base_name": "hppa2.0",
+	"enabled": true,
+
+	"targets": [
+		{
+			"name": "hp-hpux10",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+				"--disable-lto"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": false,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		},
+		{
+			"name": "hp-hpux11",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+				"--disable-lto"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": false,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		}
+	]
+}

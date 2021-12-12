@@ -1,0 +1,67 @@
+{
+	"base_name": "arm",
+	"enabled": true,
+
+	"targets": [
+		{
+			"name": "none-eabi",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"gdb_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"gcc_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"newlib_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		},
+		{
+			"name": "unknown-linux",
+			"enabled": false,
+			"libc": "glibc",
+
+			"binutils_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"gdb_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"gcc_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"newlib_args": [
+
+			],
+			"glibc_args": [
+				"--enable-multilib", "--enable-interwork"
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": true,
+		}
+	]
+}

@@ -1,0 +1,97 @@
+{
+	"base_name": "xtensa",
+	"enabled": true,
+
+	"targets": [
+		{
+			"name": "esp32-elf",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+				"--disable-lto"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		},
+		{
+			"name": "lx106-elf",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+				"--disable-lto"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		},
+		{
+			"name": "none-elf",
+			"enabled": true,
+			"libc": "newlib",
+
+			"binutils_args": [
+				"--disable-lto"
+			],
+			"gdb_args": [
+				"--disable-lto"
+			],
+			"gcc_args": [
+				"--disable-lto"
+			],
+			"newlib_args": [
+				"--disable-lto"
+			],
+			"glibc_args": [
+
+			],
+			"ulibc_args": [
+
+			],
+
+			"has_lto": true,
+			"build_gdb": true,
+			"build_libc": true,
+			"build_gcc": true,
+			"build_linux": false,
+		},
+	]
+}
